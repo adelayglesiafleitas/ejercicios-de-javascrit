@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Drum Pad - Teclas y Clic</title>
+</head>
+
+<body>
+    <header>
+        <h1>Drum Pad - Presiona una Tecla o Haz Clic</h1>
+    </header>
+    <main>
+        <div data-key="a" class="key"><kbd>A</kbd><span class="sound">Sound</span></div>
+        <div data-key="s" class="key"><kbd>S</kbd><span class="sound">Sound</span></div>
+        <div data-key="d" class="key"><kbd>D</kbd><span class="sound">Sound</span></div>
+        <div data-key="f" class="key"><kbd>F</kbd><span class="sound">Sound</span></div>
+        <div data-key="g" class="key"><kbd>G</kbd><span class="sound">Sound</span></div>
+        <div data-key="h" class="key"><kbd>H</kbd><span class="sound">Sound</span></div>
+        <div data-key="j" class="key"><kbd>J</kbd><span class="sound">Sound</span></div>
+        <div data-key="k" class="key"><kbd>K</kbd><span class="sound">Sound</span></div>
+        <div data-key="l" class="key"><kbd>L</kbd><span class="sound">Sound</span></div>
+    </main>
+    <audio data-key="a" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3"></audio>
+    <audio data-key="s" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3"></audio>
+    <audio data-key="d" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3"></audio>
+    <audio data-key="f" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3"></audio>
+    <audio data-key="g" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3"></audio>
+    <audio data-key="h" src="https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3"></audio>
+    <audio data-key="j" src="https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3"></audio>
+    <audio data-key="k" src="https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3"></audio>
+    <audio data-key="l" src="https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3"></audio>
+
+    <script>
+        // Función para manejar la presión de las teclas del teclado
+        window.addEventListener('keydown', function (e) {
+            const key = e.key.toLowerCase(); // Usamos el valor de la tecla presionada
+            const audio = document.querySelector(`audio[data-key="${key}"]`);
+            const keyElement = document.querySelector(`.key[data-key="${key}"]`);
+
+            if (!audio || !keyElement) return; // Si no hay sonido asociado, no hace nada
+
+            audio.currentTime = 0; // Reinicia el sonido
+            audio.play(); // Reproduce el sonido
+
+            keyElement.classList.add('play'); // Añade la animación a la tecla
+            e.preventDefault(); // Evita que se realicen acciones predeterminadas
+        });
+
+        // Función para quitar la animación de la tecla después de que se termine la transición
+        const keys = document.querySelectorAll('.key');
+
+        function removeTransition(e) {
+            if (e.propertyName !== 'transform' && e.propertyName !== 'box-shadow') return;
+            this.classList.remove('play'); // Elimina la clase de animación
+        }
+
+        keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+
+        // Función para manejar los clics en las teclas visuales
+        keys.forEach(key => {
+            key.addEventListener('click', function () {
+                const audio = document.querySelector(`audio[data-key="${key.dataset.key}"]`);
+                if (!audio) return;
+
+                audio.currentTime = 0; // Reinicia el sonido
+                audio.play(); // Reproduce el sonido
+
+                key.classList.add('play'); // Añade la animación de clic
+            });
+        });
+    </script>
+
+</body>
+
+</html>
