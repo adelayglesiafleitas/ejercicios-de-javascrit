@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Ejercicio_1</title>
+</head>
+
+<body>
+    <header>
+        <h1>Drum Pad - Presiona una Tecla</h1>
+    </header>
+    <main>
+        <div data-key="65" class="key"><kbd>A</kbd><span class="sound">Sound</span></div>
+        <div data-key="83" class="key"><kbd>S</kbd><span class="sound">Sound</span></div>
+        <div data-key="68" class="key"><kbd>D</kbd><span class="sound">Sound</span></div>
+        <div data-key="70" class="key"><kbd>F</kbd><span class="sound">Sound</span></div>
+        <div data-key="71" class="key"><kbd>G</kbd><span class="sound">Sound</span></div>
+        <div data-key="72" class="key"><kbd>H</kbd><span class="sound">Sound</span></div>
+        <div data-key="74" class="key"><kbd>J</kbd><span class="sound">Sound</span></div>
+        <div data-key="75" class="key"><kbd>K</kbd><span class="sound">Sound</span></div>
+        <div data-key="76" class="key"><kbd>L</kbd><span class="sound">Sound</span></div>
+    </main>
+    <audio data-key="65" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3"></audio>
+    <audio data-key="83" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3"></audio>
+    <audio data-key="68" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3"></audio>
+    <audio data-key="70" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3"></audio>
+    <audio data-key="71" src="https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3"></audio>
+    <audio data-key="72" src="https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3"></audio>
+    <audio data-key="74" src="https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3"></audio>
+    <audio data-key="75" src="https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3"></audio>
+    <audio data-key="76" src="https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3"></audio>
+
+    <script>
+        window.addEventListener('keydown', function (e) {
+            const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+            const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+
+            if (!audio || !key) return; // Si no hay sonido asociado, salir
+
+            audio.currentTime = 0; // Reinicia el sonido para que se pueda reproducir rápido
+            audio.play();
+
+            key.classList.add('play'); // Agrega la animación a la tecla
+        });
+
+        const keys = document.querySelectorAll('.key');
+
+        function removeTransition(e) {
+            if (e.propertyName !== 'transform' && e.propertyName !== 'box-shadow') return;
+            this.classList.remove('play');
+        }
+
+        keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+    </script>
+
+</body>
+
+</html>
