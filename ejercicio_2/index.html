@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Reloj</title>
+</head>
+
+<body>
+    <header>
+        <h1>Reloj</h1>
+    </header>
+    <main>
+        <div class="clock">
+            <div class="border__spere">
+                <div class="clock__face">
+                    <div class="clock__hand clock__hand--hour"></div>
+                    <div class="clock__hand clock__hand--minute"></div>
+                    <div class="clock__hand clock__hand--second"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+
+        // Seleccionamos los elementos del DOM
+        const clockFace = document.querySelector('.clock__face');
+        const secondHand = document.querySelector('.clock__hand--second');
+        const minuteHand = document.querySelector('.clock__hand--minute');
+        const hourHand = document.querySelector('.clock__hand--hour');
+
+        // Crear los números de los minutos en el reloj (cada 5 minutos)
+        for (let i = 5; i <= 60; i += 5) {
+            const angle = ((i / 60) * 360) - 90;
+            const x = 50 + 42 * Math.cos(angle * (Math.PI / 180));
+            const y = 50 + 42 * Math.sin(angle * (Math.PI / 180));
+
+            const number = document.createElement('div');
+            number.classList.add('clock__number');
+            number.textContent = i === 60 ? '00' : i;
+            number.style.left = `${x}%`;
+            number.style.top = `${y}%`;
+
+            clockFace.appendChild(number);
+        }
+
+        // Función para actualizar el reloj
+        const setDate = () => {
+            const now = new Date();
+
+            // Segundos
+            const seconds = now.getSeconds();
+            const secondsDegrees = ((seconds / 60) * 360) + 90;
+            secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+
+            // Minutos
+            const minutes = now.getMinutes();
+            const minutesDegrees = ((minutes / 60) * 360) + 90;
+            minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
+
+            // Horas
+            const hours = now.getHours();
+            const hoursDegrees = ((hours % 12) / 12 * 360) + ((minutes / 60) * 30) + 90;
+            hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
+        };
+
+        // Ejecutar la función cada segundo
+        setInterval(setDate, 1000);
+        setDate(); // Para que el reloj no espere un segundo antes de moverse
+    </script>
+</body>
+
+</html>
